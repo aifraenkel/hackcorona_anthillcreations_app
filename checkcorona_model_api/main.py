@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 import json
+import traceback
 
 # If `entrypoint` is not defined in app.yaml, App Engine will look for an app
 # called `app` in `main.py`.
@@ -22,11 +23,12 @@ def postJsonHandler():
         all_feature_present = False not in [True if key in request.form.getlist("keys")  else False for idx, key in enumerate(arguments) ]
         missing_arg = [arguments[idx] for idx, key in enumerate(all_feature_present) if not all_feature_present[idx]]
 
-    except:
+    except Exception as e:
         return jsonify(risk= "NA",
                 extended_risk= "NA",
                 StatusCode=500,
-                error="Error with looping",
+                error=e,
+                traceback=traceback.format_exc(),
                 message_body=request.get_json()
                 )
     
