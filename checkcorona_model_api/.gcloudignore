@@ -17,17 +17,3 @@
 __pycache__/
 # Ignored by the build system
 /setup.cfg
-
-## /End of auto-generated .gcloudignore contents
-
-## ============
-
-# Additional ignores configured by cloud starter kit
-#!include:.gitignore
-.github/
-tests/
-conftest.py
-LICENSE
-README.md
-pytest.ini
-requirements*.txt
