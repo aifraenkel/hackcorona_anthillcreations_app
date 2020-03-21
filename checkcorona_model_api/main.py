@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+import json
 
 # If `entrypoint` is not defined in app.yaml, App Engine will look for an app
 # called `app` in `main.py`.
@@ -11,6 +12,17 @@ def default():
 
 @app.route('/infection_risk', methods = ['POST'])
 def postJsonHandler(): 
+
+    survey_inputs = request.get_json()
+    try:
+        survey_dict = json.loads(survey_inputs)
+    except:
+        return jsonify(risk= "NA",
+                extended_risk= "NA",
+                StatusCode=500,
+                message_body=request.get_json()
+                )
+    
 
     # Parse json body, validate if the request has all the required values
 
