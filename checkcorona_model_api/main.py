@@ -13,14 +13,15 @@ def default():
 @app.route('/infection_risk', methods = ['POST'])
 def postJsonHandler(): 
 
-    survey_inputs = request.json
+    survey_inputs = request.get_json()
 
     arguments = ['age_brackets', 'country' ,'existing_disorder','exposed_to_risk_country',
                     'exposed_to_virus','has_fever','has_related_symptoms', 'smoking_history','state']
 
     try:
         all_feature_present = False not in [True if key in survey_inputs.keys()  else False for idx, key in enumerate(arguments) ]
-    
+        missing_arg = [arguments[idx] for idx, key in enumerate(all_feature_present) if not all_feature_present[idx]]
+
     except:
         return jsonify(risk= "NA",
                 extended_risk= "NA",
@@ -29,8 +30,6 @@ def postJsonHandler():
                 message_body=request.json
                 )
     
-    missing_arg = [arguments[idx] for idx, key in enumerate(all_feature_present) if not all_feature_present[idx]]
-
     if not all_feature_present:
         return jsonify(risk= "NA",
                 extended_risk= "NA",
