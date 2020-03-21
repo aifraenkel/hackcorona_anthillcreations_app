@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+import json
 
 # If `entrypoint` is not defined in app.yaml, App Engine will look for an app
 # called `app` in `main.py`.
@@ -11,6 +12,32 @@ def default():
 
 @app.route('/infection_risk', methods = ['POST'])
 def postJsonHandler(): 
+
+    survey_inputs = request.get_json()
+    try:
+        survey_dict = json.loads(survey_inputs)
+    except:
+        return jsonify(risk= "NA",
+                extended_risk= "NA",
+                StatusCode=500,
+                error="Internal server error",
+                message_body=request.get_json()
+                )
+
+    arguments = ['age_brackets', 'country' ,'existing_disorder','exposed_to_risk_country',
+                    'exposed_to_virus','has_fever','has_related_symptoms', 'smoking_history','state']
+
+    all_feature_present = [True for idx, key in enumerate(arguments) if key in survey.key()].all()
+    missing_arg = [arguments[idx] for idx, key in enumerate(all_feature_present) if not all_feature_present[idx]]
+
+    if not all_feature_present:
+        return jsonify(risk= "NA",
+                extended_risk= "NA",
+                StatusCode=404,
+                error="Essential arguments {} missing".format(','.join(missing_arg)),
+                message_body=request.get_json()
+                )
+    
 
     # Parse json body, validate if the request has all the required values
 
