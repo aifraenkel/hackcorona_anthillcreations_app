@@ -27,7 +27,7 @@ def postJsonHandler():
     arguments = ['age_brackets', 'country' ,'existing_disorder','exposed_to_risk_country',
                     'exposed_to_virus','has_fever','has_related_symptoms', 'smoking_history','state']
 
-    all_feature_present = [True for idx, key in enumerate(arguments) if key in survey_inputs].all()
+    all_feature_present = False in [True for idx, key in enumerate(arguments) if key in survey_inputs]
     missing_arg = [arguments[idx] for idx, key in enumerate(all_feature_present) if not all_feature_present[idx]]
 
     if not all_feature_present:
