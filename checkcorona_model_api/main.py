@@ -13,13 +13,13 @@ def default():
 @app.route('/infection_risk', methods = ['POST'])
 def postJsonHandler(): 
 
-    survey_inputs = request.get_json()
+    #survey_inputs = request.get_json()
 
     arguments = ['age_brackets', 'country' ,'existing_disorder','exposed_to_risk_country',
                     'exposed_to_virus','has_fever','has_related_symptoms', 'smoking_history','state']
 
     try:
-        all_feature_present = False not in [True if key in survey_inputs.keys()  else False for idx, key in enumerate(arguments) ]
+        all_feature_present = False not in [True if key in request.form.getlist("keys")  else False for idx, key in enumerate(arguments) ]
         missing_arg = [arguments[idx] for idx, key in enumerate(all_feature_present) if not all_feature_present[idx]]
 
     except:
@@ -27,7 +27,7 @@ def postJsonHandler():
                 extended_risk= "NA",
                 StatusCode=500,
                 error="Error with looping",
-                message_body=request.json
+                message_body=request.get_json()
                 )
     
     if not all_feature_present:
