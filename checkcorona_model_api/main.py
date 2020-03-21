@@ -20,6 +20,21 @@ def postJsonHandler():
         return jsonify(risk= "NA",
                 extended_risk= "NA",
                 StatusCode=500,
+                error="Internal server error",
+                message_body=request.get_json()
+                )
+
+    arguments = ['age_brackets', 'country' ,'existing_disorder','exposed_to_risk_country',
+                    'exposed_to_virus','has_fever','has_related_symptoms', 'smoking_history','state']
+
+    all_feature_present = [True for idx, key in enumerate(arguments) if key in survey.key()].all()
+    missing_arg = [arguments[idx] for idx, key in enumerate(all_feature_present) if not all_feature_present[idx]]
+
+    if not all_feature_present:
+        return jsonify(risk= "NA",
+                extended_risk= "NA",
+                StatusCode=404,
+                error="Essential arguments {} missing".format(','.join(missing_arg)),
                 message_body=request.get_json()
                 )
     
