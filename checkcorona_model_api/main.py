@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
-import json
+from risk_calculator import risk
+from recomendation_calculator import recomendations
 
 # If `entrypoint` is not defined in app.yaml, App Engine will look for an app
 # called `app` in `main.py`.
@@ -41,14 +42,23 @@ def postJsonHandler():
 
     # Parse json body, validate if the request has all the required values
 
-    # Here could be the call to the model made by Claire
-    # data = model.calculateRisk(...)
+    # relatives ages 0:less than 50, 1:between 50 and 65, 2: more than 65
+    relatives_ages = 0
+    # relatives with pre-existent disease 0:no, 1:yes
+    relatives_existent_disease = 1
+    # relatives smoking history 0:no, 1:yes
+    relatives_habits = 0
 
-    return jsonify(risk= "LOW",
-                extended_risk= "The risk of infection id LOW",
+
+    # ask the model for risk analysis
+    result = risk(2, 1, 2, "Brazil", "Sao Paulo", 1, 0, 0, 0)
+
+    return jsonify(risk= result['risk'],
+                extended_risk= result['extended_results'],
+                recomendations= recomendations(result['risk'], relatives_ages, relatives_existent_disease, relatives_habits),
                 message_body=request.get_json()
                 )
-                
+
 if __name__ == '__main__':
     # This is used when running locally only. When deploying to Google App
     # Engine, a webserver process such as Gunicorn will serve the app. This
