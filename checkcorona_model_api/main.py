@@ -1,6 +1,5 @@
 from flask import Flask, request, jsonify
 import json
-import traceback
 
 # If `entrypoint` is not defined in app.yaml, App Engine will look for an app
 # called `app` in `main.py`.
@@ -28,7 +27,6 @@ def postJsonHandler():
                 extended_risk= "NA",
                 StatusCode=500,
                 error=e,
-                traceback=traceback.format_exc(),
                 message_body=request.get_json()
                 )
     
