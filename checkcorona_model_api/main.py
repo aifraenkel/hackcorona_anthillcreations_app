@@ -26,8 +26,8 @@ def postJsonHandler():
         return jsonify(risk= "NA",
                 extended_risk= "NA",
                 StatusCode=500,
-                error=e,
-                message_body=request.get_json()
+                error=str(e),
+                message_body=request.form.getlist("keys")
                 )
     
     if not all_feature_present:
