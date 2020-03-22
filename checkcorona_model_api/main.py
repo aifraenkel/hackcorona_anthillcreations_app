@@ -17,7 +17,7 @@ def postJsonHandler():
 
     arguments = ['age_brackets', 'country' ,'existing_disorder','exposed_to_risk_country',
                     'exposed_to_virus','has_fever','has_related_symptoms', 'smoking_history','state']
-
+    """
     try:
         all_feature_present = [True if key in survey_inputs else False for idx, key in enumerate(arguments) ]
         missing_arg = [arguments[idx] for idx, key in enumerate(all_feature_present) if not all_feature_present[idx]]
@@ -37,7 +37,7 @@ def postJsonHandler():
                 error="Essential arguments {} missing".format(','.join(missing_arg)),
                 message_body=request.get_json()
                 )
-    
+    """
 
     # Parse json body, validate if the request has all the required values
 
