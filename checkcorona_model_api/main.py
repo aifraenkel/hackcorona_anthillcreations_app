@@ -19,7 +19,7 @@ def postJsonHandler():
                     'exposed_to_virus','has_fever','has_related_symptoms', 'smoking_history','state']
 
     try:
-        all_feature_present = False not in [True if key in survey_inputs else False for idx, key in enumerate(arguments) ]
+        all_feature_present = [True if key in survey_inputs else False for idx, key in enumerate(arguments) ]
         missing_arg = [arguments[idx] for idx, key in enumerate(all_feature_present) if not all_feature_present[idx]]
 
     except Exception as e:
@@ -27,10 +27,10 @@ def postJsonHandler():
                 extended_risk= "NA",
                 StatusCode=500,
                 error=str(e),
-                message_body=request.form.getlist("keys")
+                message_body=survey_inputs
                 )
     
-    if not all_feature_present:
+    if False in all_feature_present:
         return jsonify(risk= "NA",
                 extended_risk= "NA",
                 StatusCode=404,
