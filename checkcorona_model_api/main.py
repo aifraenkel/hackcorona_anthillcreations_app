@@ -26,7 +26,7 @@ def postJsonHandler():
         return jsonify(risk= "NA",
                 extended_risk= "NA",
                 StatusCode=500,
-                error=e,
+                error=str(e),
                 message_body=request.get_json()
                 )
     
