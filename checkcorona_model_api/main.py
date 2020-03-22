@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from risk_calculator import risk
 from recomendation_calculator import recomendations
+from bot_message_parser import *
 
 # If `entrypoint` is not defined in app.yaml, App Engine will look for an app
 # called `app` in `main.py`.
@@ -14,12 +15,12 @@ def default():
 @app.route('/infection_risk', methods = ['POST'])
 def postJsonHandler(): 
 
-    survey_dict = request.json
+    survey_dict = request.json['parameters']
     print(survey_dict)
 
     # Parse json body, validate if the request has all the required values
-    arguments = ['age_brackets', 'country' ,'existing_disorder','exposed_to_risk_country',
-                    'exposed_to_virus','has_fever','has_related_symptoms', 'smoking_history','state']
+    arguments = ['agegroup', 'geo-country' ,'hasPreexistConditions',
+                    'exposureType','hasFever','hasSymptoms', 'smokeHistory','geo-state']
 
     try:
         all_feature_present = [True if key in survey_dict else False for idx, key in enumerate(arguments) ]
@@ -37,26 +38,18 @@ def postJsonHandler():
                 extended_risk= "NA",
                 StatusCode=404,
                 error="Essential arguments {} missing".format(','.join(missing_arg)),
-                message_body=request.json()
+                message_body= request.json['parameters']
                 )
 
-    try:
-        age_brackets = int(survey_dict['age_brackets'])
-        existing_disorder = int(survey_dict['existing_disorder'])
-        smoking_history = int(survey_dict['smoking_history'])
-        country = survey_dict['country']
-        state = survey_dict['state']
-        exposed_to_virus = int(survey_dict['exposed_to_virus'])
-        exposed_to_risk_country = int(survey_dict['exposed_to_risk_country'])
-        has_fever = int(survey_dict['has_fever'])
-        has_related_symptoms = int(survey_dict['has_related_symptoms'])
-    except Exception as e:
-        return jsonify(risk= "NA",
-                extended_risk= "NA",
-                StatusCode=404,
-                error="Type format error {}".format(','.join(request.json())),
-                message_body=request.json()
-                )
+    age_brackets = parseAgeBrackets(survey_dict['agegroup'])
+    existing_disorder = parseExistingDisorder(survey_dict['hasPreexistConditions'])
+    smoking_history = parseSmokingHistory(survey_dict['smokeHistory'])
+    country = survey_dict['geo-country']
+    state = survey_dict['geo-state']
+    exposed_to_virus = parseExposureToVirus(survey_dict['exposureType'])
+    exposed_to_risk_country = isCountryRisky(country)
+    has_fever = parseHasFever(survey_dict['hasFever'])
+    has_related_symptoms = parseHasRelatedDiseases(survey_dict['hasSymptoms'])
 
     # relatives ages 0:less than 50, 1:between 50 and 65, 2: more than 65
     relatives_ages = 0
@@ -71,7 +64,7 @@ def postJsonHandler():
     return jsonify(risk= result['risk'],
                 extended_risk= result['extended_results'],
                 recomendations= recomendations(result['risk'], relatives_ages, relatives_existent_disease, relatives_habits),
-                message_body=request.get_json()
+                message_body= request.json['parameters']
                 )
 
 if __name__ == '__main__':
