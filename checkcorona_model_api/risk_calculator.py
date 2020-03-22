@@ -5,15 +5,20 @@ def risk(age_brackets, existing_disorder, smoking_history, country, state, expos
 
     result = {}
 
-    if country == "Brazil":
-        cases = int(brazil_local_cases(state))
-    elif country == "Argentina":
-        cases = int(argentina_local_cases(state))
-    elif country == "Chile":
-        cases = int(chile_local_cases(state))
-    else:
-        cases = "not available"
-
+    try:
+        if country == "Brazil":
+                cases = int(brazil_local_cases(state))
+        elif country == "Argentina":
+            cases = int(argentina_local_cases(state))
+        elif country == "Chile":
+            cases = int(chile_local_cases(state))
+        else:
+            # Need to comment because calculation will fail  
+            # cases = "not available"
+            cases = 0
+    except:
+        cases = 0
+    
     risk_score = risk_score = age_brackets+existing_disorder+smoking_history+exposed_to_virus+exposed_to_risk_country+other_symptons
 
     if cases > 100:
