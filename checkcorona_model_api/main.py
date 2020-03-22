@@ -14,21 +14,22 @@ def default():
 @app.route('/infection_risk', methods = ['POST'])
 def postJsonHandler(): 
 
-    survey_inputs = request.get_json()
+    survey_dict = request.json
+    print(survey_dict)
 
+    # Parse json body, validate if the request has all the required values
     arguments = ['age_brackets', 'country' ,'existing_disorder','exposed_to_risk_country',
                     'exposed_to_virus','has_fever','has_related_symptoms', 'smoking_history','state']
-    """
-    try:
-        all_feature_present = [True if key in survey_inputs else False for idx, key in enumerate(arguments) ]
-        missing_arg = [arguments[idx] for idx, key in enumerate(all_feature_present) if not all_feature_present[idx]]
 
+    try:
+        all_feature_present = [True if key in survey_dict else False for idx, key in enumerate(arguments) ]
+        missing_arg = [arguments[idx] for idx, key in enumerate(all_feature_present) if not all_feature_present[idx]]
     except Exception as e:
         return jsonify(risk= "NA",
                 extended_risk= "NA",
                 StatusCode=500,
                 error=str(e),
-                message_body=survey_inputs
+                message_body=survey_dict
                 )
     
     if False in all_feature_present:
@@ -36,11 +37,26 @@ def postJsonHandler():
                 extended_risk= "NA",
                 StatusCode=404,
                 error="Essential arguments {} missing".format(','.join(missing_arg)),
-                message_body=request.get_json()
+                message_body=request.json()
                 )
-    """
 
-    # Parse json body, validate if the request has all the required values
+    try:
+        age_brackets = int(survey_dict['age_brackets'])
+        existing_disorder = int(survey_dict['existing_disorder'])
+        smoking_history = int(survey_dict['smoking_history'])
+        country = survey_dict['country']
+        state = survey_dict['state']
+        exposed_to_virus = int(survey_dict['exposed_to_virus'])
+        exposed_to_risk_country = int(survey_dict['exposed_to_risk_country'])
+        has_fever = int(survey_dict['has_fever'])
+        has_related_symptoms = int(survey_dict['has_related_symptoms'])
+    except Exception as e:
+        return jsonify(risk= "NA",
+                extended_risk= "NA",
+                StatusCode=404,
+                error="Type format error {}".format(','.join(request.json())),
+                message_body=request.json()
+                )
 
     # relatives ages 0:less than 50, 1:between 50 and 65, 2: more than 65
     relatives_ages = 0
@@ -49,9 +65,8 @@ def postJsonHandler():
     # relatives smoking history 0:no, 1:yes
     relatives_habits = 0
 
-
     # ask the model for risk analysis
-    result = risk(2, 1, 2, "Brazil", "Sao Paulo", 1, 0, 0, 0)
+    result = risk(age_brackets, existing_disorder, smoking_history, country, state, exposed_to_virus, exposed_to_risk_country, has_fever, has_related_symptoms)
 
     return jsonify(risk= result['risk'],
                 extended_risk= result['extended_results'],
