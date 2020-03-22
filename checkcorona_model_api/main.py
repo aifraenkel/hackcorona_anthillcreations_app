@@ -14,6 +14,32 @@ def default():
 @app.route('/infection_risk', methods = ['POST'])
 def postJsonHandler(): 
 
+    survey_inputs = request.get_json()
+
+    arguments = ['age_brackets', 'country' ,'existing_disorder','exposed_to_risk_country',
+                    'exposed_to_virus','has_fever','has_related_symptoms', 'smoking_history','state']
+    """
+    try:
+        all_feature_present = [True if key in survey_inputs else False for idx, key in enumerate(arguments) ]
+        missing_arg = [arguments[idx] for idx, key in enumerate(all_feature_present) if not all_feature_present[idx]]
+
+    except Exception as e:
+        return jsonify(risk= "NA",
+                extended_risk= "NA",
+                StatusCode=500,
+                error=str(e),
+                message_body=survey_inputs
+                )
+    
+    if False in all_feature_present:
+        return jsonify(risk= "NA",
+                extended_risk= "NA",
+                StatusCode=404,
+                error="Essential arguments {} missing".format(','.join(missing_arg)),
+                message_body=request.get_json()
+                )
+    """
+
     # Parse json body, validate if the request has all the required values
 
     # relatives ages 0:less than 50, 1:between 50 and 65, 2: more than 65
