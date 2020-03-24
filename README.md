@@ -19,19 +19,31 @@ At the momento, it is a Facebook Messenger Chatbot. The architecture is ready to
  - [x] Chatbot was developed using DialogFlow, because that platform is good enough for scale the bot and have lot of options of integration.
  - [x] To simplify costs management, and because it was natural too, we use GCP for every component.
 
+## Requirements
+ - Python 3.7
+ - GCP command line tools
+ - GCP project deployment user permission
+
 ## Installation and usage
 We recommend installing and runnig api into a virtual environment context.  
 1. Start virtual environment
 ```
-python -m venv env
+py -m venv env
 env\Scripts\activate
 ```
 2. Install dependencie and run the api
 ```
 pip install -r requirements.txt
-python main.py
+py main.py
 ```
 3. Stop virtual env
 ```
 deactivate
+```
+
+## Deployment
+Being on api folder, the folder where app.yaml is located
+```
+gcloud login
+gcloud app deploy
 ```
