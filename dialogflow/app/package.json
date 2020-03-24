@@ -1,0 +1,49 @@
+{
+  "name": "coronaApi",
+  "version": "1.0.0",
+  "description": "Serverless lamda",
+  "keywords": [
+    "api"
+  ],
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "author": "Sean",
+  "license": "Unlicense",
+  "dependencies": {
+    "actions-on-google": "^2.2.0",
+    "dialogflow": "^0.6.0",
+    "dialogflow-fulfillment": "^0.5.0",
+    "btoa": "^1.2.1",
+    "jsonwebtoken": "^8.5.1",
+    "jwks-rsa": "^1.5.0",
+    "moment": "^2.24.0",
+    "moment-timezone": "^0.5.12",
+    "node-fetch": "^2.6.0",
+    "pg": "^7.11.0",
+    "request": "^2.88.2",
+    "request-promise": "^4.2.5",
+    "serverless-plugin-split-stacks": "^1.9.3",
+    "uuid": "^3.3.2",
+    "webpack-node-externals": "^1.7.2"
+  },
+  "devDependencies": {
+    "@types/request": "2.48.4",
+    "@types/request-promise": "4.1.41",
+    "@types/aws-lambda": "^8.10.30",
+    "@types/lodash": "^4.14.136",
+    "@types/moment": "^2.13.0",
+    "@types/moment-timezone": "^0.5.12",
+    "@types/node": "~12.7.2",
+    "@types/pg": "^7.4.14",
+    "@types/uuid": "^3.4.5",
+    "copy-webpack-plugin": "^5.0.3",
+    "serverless": "^1.47.0",
+    "serverless-offline": "^5.10.1",
+    "serverless-webpack": "^5.3.1",
+    "ts-loader": "^6.0.4",
+    "typescript": "^3.5.3",
+    "webpack": "^4.36.1"
+  }
+}
