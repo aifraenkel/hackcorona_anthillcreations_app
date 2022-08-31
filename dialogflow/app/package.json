@@ -19,7 +19,7 @@
     "jsonwebtoken": "^8.5.1",
     "jwks-rsa": "^1.5.0",
     "moment": "^2.24.0",
-    "moment-timezone": "^0.5.12",
+    "moment-timezone": "^0.5.35",
     "node-fetch": "^2.6.0",
     "pg": "^7.11.0",
     "request": "^2.88.2",
