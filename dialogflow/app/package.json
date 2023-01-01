@@ -38,12 +38,12 @@
     "@types/node": "~12.7.2",
     "@types/pg": "^7.4.14",
     "@types/uuid": "^3.4.5",
-    "copy-webpack-plugin": "^5.0.3",
+    "copy-webpack-plugin": "^11.0.0",
     "serverless": "^1.47.0",
     "serverless-offline": "^5.10.1",
     "serverless-webpack": "^5.3.1",
-    "ts-loader": "^6.0.4",
+    "ts-loader": "^9.4.2",
     "typescript": "^3.5.3",
-    "webpack": "^4.36.1"
+    "webpack": "^5.75.0"
   }
 }
